@@ -1,0 +1,12 @@
+{
+  "contacts": [
+    {
+      "id": "1",
+      "name": "Bolupe Taiwo",
+      "email": "bolupetaiwo15@gmail.com"
+    }
+  ],
+  "meta": {
+    "lastUpdated": 1630401600000 // Replace with a Unix timestamp
+  }
+}
