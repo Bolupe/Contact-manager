@@ -1,14 +1,28 @@
+//  This code handles retrieving, adding, updating, and removing contacts, as well as searching for contacts based on search terms. 
+
+
+// Imports: The code imports necessary modules and dependencies and other functions from other files.
 import React, { createContext, useContext, useState } from "react";
 import api from "../api/contacts";
 import { uuid } from "uuidv4";
 
+
+// This context will allow components to access the contact data and various functions for managing contacts.
 const ContactsCrudContext = createContext();
+
+// This is a React component that provides the context and manages the state of contacts and search functionality.
+// It initializes several pieces of state using useState:
 
 export function ContactsCrudContextProvider({ children }) {
   const [contacts, setContacts] = useState([]);
+  // contacts: An array that will hold the list of contacts.
   const [text, setText] = useState("");
+  // text: A string state used for storing text used in the search bar.
   const [searchResults, setSearchResults] = useState([]);
+  // searchResults: An array that will hold the filtered contacts based on search criteria.
 
+
+  // Retrieves contacts from the API and sets the contacts state with the received data.
   const retrieveContacts = async () => {
     try {
       const response = await api.get("/contacts");
@@ -18,6 +32,7 @@ export function ContactsCrudContextProvider({ children }) {
     }
   };
 
+  // Adds a new contact to the list of contacts both locally and on the server.
   const addContactHandler = async (contact) => {
     try {
       const request = {
@@ -31,6 +46,7 @@ export function ContactsCrudContextProvider({ children }) {
     }
   };
 
+  // Removes a contact from the list of contacts both locally and on the server.
   const removeContactHandler = async (id) => {
     try {
       await api.delete(`/contacts/${id}`);
@@ -42,6 +58,7 @@ export function ContactsCrudContextProvider({ children }) {
     }
   };
 
+  // Updates a contact's information both locally and on the server.
   const updateContactHandler = async (contact) => {
     try {
       const response = await api.put(`/contacts/${contact.id}`, contact);
@@ -53,6 +70,7 @@ export function ContactsCrudContextProvider({ children }) {
     }
   };
 
+  // Filters the list of contacts based on a search term and updates the searchResults state accordingly.
   const searchHandler = (searchTerm) => {
     setText(searchTerm);
     if (searchTerm !== "") {
@@ -68,6 +86,7 @@ export function ContactsCrudContextProvider({ children }) {
     }
   };
 
+  // created with all these states and functions, which will be provided to the context consumers.
   const contextValue = {
     contacts,
     retrieveContacts,
@@ -86,6 +105,7 @@ export function ContactsCrudContextProvider({ children }) {
   );
 }
 
+// useContactsCrud is a custom hook that allows other components to access the context value created in ContactsCrudContextProvider using useContext. 
 export function useContactsCrud() {
   return useContext(ContactsCrudContext);
 }
